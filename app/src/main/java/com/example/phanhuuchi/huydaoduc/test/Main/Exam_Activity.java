@@ -152,7 +152,7 @@ public class Exam_Activity extends AppCompatActivity {
         else
         {
             // use text
-            _questionText.setText(word.getMota());
+            _questionText.setText(word.getTen());
             _questionText.setVisibility(View.VISIBLE);
         }
     }
@@ -167,10 +167,9 @@ public class Exam_Activity extends AppCompatActivity {
             btnCount = _wordList.size();
 
             // ẩn và loại những button k cần thiết - do số lượng từ đếm từ 1, còn button đếm từ 0 nên làm cẩn thận
-            for (int i = btnCount; i < _wordList.size(); i++) {
+            for (int i = _wordList.size() + 1; i >= btnCount; i--) {
                 _curButtonList.get(i).setVisibility(View.INVISIBLE);
                 _curButtonList.remove(_curButtonList.get(i));
-
             }
         }
 
