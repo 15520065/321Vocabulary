@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#82ffe8</color>
+
+    <!--Word Row Layout-->
+    <color name="pressed_color">#a6a6a6</color>
+    <color name="default_color">#ffffff</color>
+    <color name="theloai_view_color">#dfdfdf</color>
+    <color name="theloai_view_text_color">#ffffff</color>
+    <color name="word_ten_color">#b62a2a</color>
+
+</resources>
