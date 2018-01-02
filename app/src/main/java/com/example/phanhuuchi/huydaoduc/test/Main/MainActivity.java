@@ -110,9 +110,6 @@ public class MainActivity extends AppCompatActivity
             startService(new Intent(this,LockScreenService.class));
         else
             stopService(new Intent(this, LockScreenService.class));
-
-
-
     }
 
     @Override
