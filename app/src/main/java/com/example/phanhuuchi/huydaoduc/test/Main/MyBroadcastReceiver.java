@@ -5,20 +5,35 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by Admin on 1/1/2018.
+ * Created by Admin on 12/26/2018.
  */
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 
+    private static MyBroadcastReceiver myBroadcastReceiver;
+
+    static public MyBroadcastReceiver getInstance()
+    {
+        if(myBroadcastReceiver == null)
+        {
+            myBroadcastReceiver = new MyBroadcastReceiver();
+            return myBroadcastReceiver;
+        }
+        else
+            return myBroadcastReceiver;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+
         // bắt Screen Off action. Nếu bắt được thì chạy Exam Activity. Để sau khi unlock thì nó hiện lên sẵn rồi
         if(action.equals(Intent.ACTION_SCREEN_OFF))
         {
             Intent i = new Intent(context, Exam_Activity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);             // thay FLAG_ACTIVITY_NEW_TASK bằng FLAG_ACTIVITY_CLEAR_TOP để tránh việc tạo lại nhiều activity
             context.startActivity(i);
+
         }
     }
 

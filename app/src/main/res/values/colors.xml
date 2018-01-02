@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#82ffe8</color>
 
+
     <!--Dialog-->
     <color name="dialog_background_color">#a6a6a6</color>
 
@@ -12,6 +13,14 @@
     <color name="default_word_row_color">#ffffff</color>
     <color name="theloai_view_color">#dfdfdf</color>
     <color name="theloai_view_text_color">#ffffff</color>
-    <color name="word_ten_color">#b62a2a</color>
+    <color name="normal_text_color">#e4e4e4</color>
+
+
+    <color name="header_text">#d92c2c</color>
+
+    <!--Button-->
+    <color name="outline_color_blue">#3AA9FF</color>
+    <color name="text_color_blue">#2FD0FE</color>
+    <color name="text_color_white">#ffffff</color>
 
 </resources>

@@ -4,30 +4,23 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Application">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/test"
+                android:id="@+id/game"
                 android:icon="@drawable/test_icon_24px"
-                android:title="Test"/>
+                android:title="Game"/>
+            <item
+                android:id="@+id/nav_manage"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/action_setting" />
             <item
                 android:id="@+id/about"
                 android:icon="@drawable/about_24px"

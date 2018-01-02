@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Bird"
             android:textSize="@dimen/word_ten_text_size"
-            android:textColor="@color/word_ten_color" />
+            android:textColor="@color/header_text" />
 
         <TextView
             android:id="@+id/txtTheLoai"
@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:text="Bird"
             android:textSize="@dimen/word_mota_text_size"
+            android:textColor="@color/normal_text_color"
             android:layout_below="@+id/txtTheLoai" />
     </RelativeLayout>
 

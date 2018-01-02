@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.phanhuuchi.huydaoduc.test">
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
@@ -14,7 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main.SplashScreen" />
-        <activity android:name=".model.Detail_Word" />
-        <activity android:name=".Main.Exam_Activity" />
-        <activity android:name=".Main.Exam_Typing_Activity" />
-        <activity android:name=".Main.Exam_Card_Activity" />
+        <activity android:name=".model.Detail_Word"/>
+        <activity android:name=".Main.Exam_Activity"/>
+        <activity android:name=".Main.Exam_Typing_Activity"/>
+        <activity android:name=".Main.Exam_Card_Activity"/>
 
 
         <receiver android:name=".Main.AppWidget">
@@ -38,13 +40,20 @@
                 android:resource="@xml/app_widget_info" />
         </receiver>
 
-        <activity android:name=".Main.SettingsActivity"
+        <activity android:name=".Settings.SettingsActivity"
             android:label="Settings"
             android:parentActivityName=".Main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Main.MainActivity"/>
         </activity>
+
+         <!--Service-->
+        <service
+            android:name=".Main.LockScreenService"
+            android:exported="false"
+            tools:ignore="InnerclassSeparator" />
+
     </application>
 
 </manifest>

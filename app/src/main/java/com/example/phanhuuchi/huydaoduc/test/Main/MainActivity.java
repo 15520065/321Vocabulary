@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.example.phanhuuchi.huydaoduc.test.Adapter.WordAdapter;
 import com.example.phanhuuchi.huydaoduc.test.Data.DBSQL;
 import com.example.phanhuuchi.huydaoduc.test.R;
+import com.example.phanhuuchi.huydaoduc.test.Settings.SettingsActivity;
 import com.example.phanhuuchi.huydaoduc.test.model.Detail_Word;
 import com.example.phanhuuchi.huydaoduc.test.model.Word;
 import com.example.phanhuuchi.huydaoduc.test.model.WordList;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity
 
     // view
     SearchView searchView;
-    Button btnTest;
 
     // view của dialog add new word
     EditText editten ;
@@ -80,6 +80,14 @@ public class MainActivity extends AppCompatActivity
     Button btnAddImage;
     Button btnAddSound;
 
+    // view của dialog chọn acitity game
+    Button btn_game_quiz;
+    Button btn_game_typing;
+    Button btn_game_card;
+
+    // setting
+    SharedPreferences sharedPreferences;
+
 
     //public static WordAdapter adapterWords;
     public static WordAdapter adapterWords;
@@ -88,6 +96,40 @@ public class MainActivity extends AppCompatActivity
 
 
     public static final String TITLE = "title";
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // listener cho setting
+        Boolean soundSWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_MUTESOUND_SWITCH,false);
+        MyMediaPlayer.getInstance().setMute(soundSWitchPref);
+
+        Boolean lockSreenSWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_LOCKSCREEN_SWITCH,false);
+        if(lockSreenSWitchPref == true)
+            startService(new Intent(this,LockScreenService.class));
+        else
+            stopService(new Intent(this, LockScreenService.class));
+
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // listener cho setting
+        Boolean sWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_MUTESOUND_SWITCH,false);
+        MyMediaPlayer.getInstance().setMute(sWitchPref);
+
+        Boolean lockSreenSWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_LOCKSCREEN_SWITCH,false);
+        if(lockSreenSWitchPref == true)
+            startService(new Intent(this,LockScreenService.class));
+        else
+            stopService(new Intent(this, LockScreenService.class));
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +146,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        FloatingActionButton fab_game = (FloatingActionButton) findViewById(R.id.fab_game);
+        fab_game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showGameDialog();
+            }
+        });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -113,19 +163,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // đặt giá trị mặc định đọc từ file XML preference -- reading the values defined by each Preference item's
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        //Set up our Lockscreen
-        //startService(new Intent(this,LockScreenService.class));
-        MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
-        IntentFilter screenStateFilter = new IntentFilter();
-        screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
-        screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(broadcastReceiver, screenStateFilter);
+        // start service
+        startService(new Intent(this,LockScreenService.class));
 
         // lay dsword tu word list
         dsWords = WordList.getWordList();
+
+        // đặt giá trị mặc định đọc từ file XML preference -- reading the values defined by each Preference item's
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        // gán setting pref
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //
         xuLySaoChepCSDLTuAssetsVaoHeThongMobile();
@@ -133,6 +180,74 @@ public class MainActivity extends AppCompatActivity
         addEvents();
         xuLyHienThiWord();
         addNotification();
+    }
+
+    private void showGameDialog() {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.dialog_game);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        btn_game_quiz = dialog.findViewById(R.id.btn_game_quiz);
+        btn_game_typing = dialog.findViewById(R.id.btn_game_typing);
+        btn_game_card = dialog.findViewById(R.id.btn_game_card);
+
+        btn_game_quiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dsWords.size() == 1)
+                {
+                    // nếu chỉ có 1 từ thì k được kiểm tra
+                    Toast.makeText(getApplicationContext(), R.string.need_more_word, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else
+                {
+                    //Intent intent = new Intent(getApplicationContext(),Exam_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(),Exam_Activity.class);
+                    startActivity(intent);
+                }
+                dialog.dismiss();
+            }
+        });
+
+        btn_game_typing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dsWords.size() == 1)
+                {
+                    // nếu chỉ có 1 từ thì k được kiểm tra
+                    Toast.makeText(getApplicationContext(), R.string.need_more_word, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else
+                {
+                    //Intent intent = new Intent(getApplicationContext(),Exam_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(),Exam_Typing_Activity.class);
+                    startActivity(intent);
+                }
+                dialog.dismiss();
+            }
+        });
+
+        btn_game_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dsWords.size() == 1)
+                {
+                    // nếu chỉ có 1 từ thì k được kiểm tra
+                    Toast.makeText(getApplicationContext(), R.string.need_more_word, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else
+                {
+                    //Intent intent = new Intent(getApplicationContext(),Exam_Activity.class);
+                    Intent intent = new Intent(getApplicationContext(),Exam_Card_Activity.class);
+                    startActivity(intent);
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     private void showAddNewWordDialog()
@@ -280,7 +395,6 @@ public class MainActivity extends AppCompatActivity
 
     private void addControls() {
         lvWord= (ListView) findViewById(R.id.lvWord);
-        btnTest = (Button) findViewById(R.id.btnTest);
         //adapterWords = new WordAdapter(this,R.layout.dong_word,dsWords);
         adapterWords = new WordAdapter(this,R.layout.dong_word,dsWords);
         lvWord.setAdapter(adapterWords);
@@ -292,12 +406,6 @@ public class MainActivity extends AppCompatActivity
     private void addEvents() {
         addListViewEvents();
 
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                OpenExamAcitity();
-            }
-        });
 
         //Chi: search
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -579,20 +687,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_manage) {
+        if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.about){
-            Intent intent = new Intent(MainActivity.this,SplashScreen.class);
+        } else if (id == R.id.about) {
+            Intent intent = new Intent(MainActivity.this, SplashScreen.class);
             startActivity(intent);
-        } else if (id == R.id.test){
-            //startActivity(new Intent(MainActivity.this,Exam_Activity.class));
-            OpenExamAcitity();
+        } else if (id == R.id.game) {
+            showGameDialog();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -600,23 +703,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-    //Chi:
-    private void OpenExamAcitity()
-    {
-        if (dsWords.size() == 1)
-        {
-            // nếu chỉ có 1 từ thì k được kiểm tra
-            Toast.makeText(getApplicationContext(), "Need more word to take the test", Toast.LENGTH_LONG).show();
-            return;
-        }
-        else
-        {
-            //Intent intent = new Intent(getApplicationContext(),Exam_Activity.class);
-            Intent intent = new Intent(getApplicationContext(),Exam_Card_Activity.class);
-            startActivity(intent);
-        }
-    }
 
     //// Load image from internal store
     // tạo intent để chọn hình cần load

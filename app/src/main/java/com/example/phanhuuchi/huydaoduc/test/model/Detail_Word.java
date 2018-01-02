@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.phanhuuchi.huydaoduc.test.Data.DBSQL;
 import com.example.phanhuuchi.huydaoduc.test.Main.MainActivity;
+import com.example.phanhuuchi.huydaoduc.test.Main.MyMediaPlayer;
 import com.example.phanhuuchi.huydaoduc.test.R;
 
 import butterknife.ButterKnife;
@@ -38,6 +39,13 @@ public class Detail_Word extends AppCompatActivity {
     EditText txtNote;
 
     private Word _curWord;
+
+    @Override
+    protected void onPause() {
+        MyMediaPlayer.getInstance().stop();
+        super.onPause();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +73,7 @@ public class Detail_Word extends AppCompatActivity {
                 {
                     if(Word.mediaPlayer.isPlaying())
                     {
-                        StopSound();
+                        MyMediaPlayer.getInstance().stop();
                     }
                     else
                     {
@@ -100,7 +108,7 @@ public class Detail_Word extends AppCompatActivity {
     @OnClick(R.id.btnEdit)
     public void btnEdit(View view){
         final Dialog dialog = new Dialog(this);
-        dialog.setTitle("Edit");
+        dialog.setTitle(R.string.edit);
         dialog.setContentView(R.layout.edit_word);
         dialog.show();
 
@@ -117,8 +125,9 @@ public class Detail_Word extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editTen.getText().toString().equals("")==true||editMota.getText().toString().equals("")==true){
-                    Toast.makeText(Detail_Word.this,"Điền đầy đủ thông tin...",Toast.LENGTH_SHORT).show();
+                if (editTen.getText().toString().equals("")==true||editMota.getText().toString().equals("")==true)
+                {
+                    Toast.makeText(Detail_Word.this,R.string.fill_missing_infor,Toast.LENGTH_SHORT).show();
                 }
                 else {
                     //Word word = new Word(editten.getText().toString(),editmota.getText().toString());
@@ -129,7 +138,7 @@ public class Detail_Word extends AppCompatActivity {
                     MainActivity.database.close();
                     dialog.dismiss();
                     //Toast.makeText(getApplicationContext(),"id= " + WordId,Toast.LENGTH_SHORT).show();
-                    Toast.makeText(Detail_Word.this,"Update Successfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Detail_Word.this, R.string.update_success,Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Detail_Word.this,MainActivity.class);
                     startActivity(intent);
                 }
@@ -148,10 +157,10 @@ public class Detail_Word extends AppCompatActivity {
     @OnClick(R.id.btnDelete)
     public void btnDelete(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Thông Báo");
-        builder.setMessage("Bạn có chắc muốn Xóa ?");
+        builder.setTitle(R.string.notification);
+        builder.setMessage(R.string.sure_delete);
 
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -192,7 +201,7 @@ public class Detail_Word extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.setContentView(R.layout.note_dialog);
-                dialog.setTitle("Note");
+                dialog.setTitle(R.string.note);
                 dialog.show();
 
                 Button btnAddNote = dialog.findViewById(R.id.btnAddNote);
@@ -213,18 +222,7 @@ public class Detail_Word extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         // nếu out ra mà nhạc còn phát thì tắt
-        StopSound();
+        MyMediaPlayer.getInstance().stop();
         super.onWindowFocusChanged(hasFocus);
-    }
-
-    private void StopSound()
-    {
-        if(Word.mediaPlayer.isPlaying())
-        {
-            Word.StopPlayingSound();
-
-            //imageButtonSound.setBackgroundResource(R.drawable.ic_play_sound);
-        }
-
     }
 }

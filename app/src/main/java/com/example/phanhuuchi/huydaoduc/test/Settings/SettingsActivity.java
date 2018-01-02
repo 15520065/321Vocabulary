@@ -1,10 +1,11 @@
-package com.example.phanhuuchi.huydaoduc.test.Main;
+package com.example.phanhuuchi.huydaoduc.test.Settings;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_PREF_LOCKSCREEN_SWITCH = "locksreen_switch";
+    public static final String KEY_PREF_MUTESOUND_SWITCH = "mute_sound";
 
 
     @Override
@@ -20,4 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
 //        Boolean sWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_LOCKSCREEN_SWITCH,false);
 
     }
+
+
 }

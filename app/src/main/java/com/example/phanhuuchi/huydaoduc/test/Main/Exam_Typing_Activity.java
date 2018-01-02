@@ -1,12 +1,9 @@
 package com.example.phanhuuchi.huydaoduc.test.Main;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Exam_Typing_Activity extends AppCompatActivity implements Animation.AnimationListener {
+public class Exam_Typing_Activity extends AppCompatActivity {
 
     // answer view
     EditText _answerEditText;
@@ -40,6 +37,13 @@ public class Exam_Typing_Activity extends AppCompatActivity implements Animation
     boolean _isShowingReasult;
 
     public Exam_Typing_Activity() {
+
+    }
+
+    @Override
+    protected void onPause() {
+        MyMediaPlayer.getInstance().stop();
+        super.onPause();
 
     }
 
@@ -81,7 +85,8 @@ public class Exam_Typing_Activity extends AppCompatActivity implements Animation
         // lấy danh sách từ
         _wordList = WordList.getWordList();
 
-        _checkButton.setBackgroundResource(R.drawable.background_btn);
+        _checkButton.setBackgroundResource(R.drawable.background_btn_blue);
+        _checkButton.setTextColor(getResources().getColor(R.color.text_color_white));
 
         _answerEditText.setText("");
 
@@ -177,7 +182,9 @@ public class Exam_Typing_Activity extends AppCompatActivity implements Animation
                     }
                     else if (_answerEditText.getText().toString().trim().toUpperCase().equals(curWord.getTen().trim().toUpperCase()))
                     {
-                        _checkButton.setBackgroundColor(Color.GREEN);
+                        _checkButton.setBackgroundResource(R.drawable.background_btn_green);
+                        _checkButton.setTextColor(getResources().getColor(R.color.text_color_white));
+                        MyMediaPlayer.getInstance().playNew(getApplication(),R.raw.correct_answer);
 
                         final CountDownTimer start = new CountDownTimer(endTime, endTime) {
                             @Override
@@ -191,14 +198,16 @@ public class Exam_Typing_Activity extends AppCompatActivity implements Animation
                     }
                     else
                     {
-                        _checkButton.setBackgroundColor(Color.RED);
+                        _checkButton.setBackgroundResource(R.drawable.background_btn_red);
+                        _checkButton.setTextColor(getResources().getColor(R.color.text_color_white));
+                        MyMediaPlayer.getInstance().playNew(getApplication(),R.raw.wrong_answer);
 
                         final CountDownTimer start = new CountDownTimer(endTime, endTime) {
                             @Override
                             public void onTick(long l) {}
 
                             public void onFinish() {
-                                _checkButton.setBackgroundResource(R.drawable.background_btn);
+                                _checkButton.setBackgroundResource(R.drawable.background_btn_blue);
                                 _isShowingReasult = false;
                             }
                         }.start();
@@ -286,31 +295,9 @@ public class Exam_Typing_Activity extends AppCompatActivity implements Animation
         if(Word.mediaPlayer.isPlaying())
         {
             Word.StopPlayingSound();
-            //_questionSound.setBackgroundResource(R.drawable.ic_play_sound);
         }
     }
 
-    //// ANIMATION
-    //todo: xoa phan nay neu k xai
-    @Override
-    public void onAnimationStart(Animation animation) {
-
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        },3000);
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
-    }
 
 }
 

@@ -1,6 +1,6 @@
 package com.example.phanhuuchi.huydaoduc.test.Main;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.phanhuuchi.huydaoduc.test.R;
 import com.example.phanhuuchi.huydaoduc.test.model.Word;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by PhanHuuChi on 1/12/2017.
+ * Created by PhanHuuChi on 12/1/2017.
  */
 
 
@@ -48,13 +47,20 @@ public class Exam_Activity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        MyMediaPlayer.getInstance().stop();
+        super.onPause();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_);
 
+
         init();
         check();
-
     }
 
     private void init() {
@@ -104,7 +110,8 @@ public class Exam_Activity extends AppCompatActivity {
         for (Button btn : _curButtonList) {
             btn.setText("");
             // set default background color
-            btn.setBackgroundResource(R.drawable.background_btn);
+            btn.setBackgroundResource(R.drawable.background_btn_blue);
+            btn.setTextColor(getResources().getColor(R.color.text_color_blue));
             btn.setVisibility(View.VISIBLE);
         }
 
@@ -131,6 +138,10 @@ public class Exam_Activity extends AppCompatActivity {
             _questionImage.setImageBitmap(word.getImageBitmap());
             _questionImage.setVisibility(View.VISIBLE);
 
+            Animation trans = AnimationUtils.loadAnimation(this,R.anim.fade_in);
+            _questionImage.setAnimation(trans);
+            trans.start();
+
         }
         else if (word.getSound() != null && rI == 1)
         {
@@ -140,7 +151,7 @@ public class Exam_Activity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if(Word.mediaPlayer.isPlaying())
-                        StopSound();
+                        MyMediaPlayer.getInstance().stop();
                     else
                     {
                         word.PlaySound(getApplication());
@@ -152,7 +163,7 @@ public class Exam_Activity extends AppCompatActivity {
         else
         {
             // use text
-            _questionText.setText(word.getTen());
+            _questionText.setText(word.getMota());
             _questionText.setVisibility(View.VISIBLE);
         }
     }
@@ -167,7 +178,7 @@ public class Exam_Activity extends AppCompatActivity {
             btnCount = _wordList.size();
 
             // ẩn và loại những button k cần thiết - do số lượng từ đếm từ 1, còn button đếm từ 0 nên làm cẩn thận
-            for (int i = _wordList.size() + 1; i >= btnCount; i--) {
+            for (int i = 3; i > btnCount - 1; i--) {
                 _curButtonList.get(i).setVisibility(View.INVISIBLE);
                 _curButtonList.remove(_curButtonList.get(i));
             }
@@ -204,22 +215,24 @@ public class Exam_Activity extends AppCompatActivity {
         int temp[] = {-1, -1, -1, -1};          // biến lưu giá trị từ hiện tại của btn
         temp[rBt] = curentIndex;
 
-        final long endTime = 1400;      // thời gian thể hiện kết quả trước khi chạy cái mới
+        final long endTime = 800;      // thời gian thể hiện kết quả trước khi chạy cái mới
 
         for (int i = 0; i < btnCount; i++)
         {
             if (i == rBt) {
                 getQuestion(_wordList.get(curentIndex));
-                _curButtonList.get(rBt).setText(_wordList.get(curentIndex).getMota());
+                _curButtonList.get(rBt).setText(_wordList.get(curentIndex).getTen());
 
                 // set action
                 _curButtonList.get(i).setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("ResourceAsColor")
                     @Override
                     public void onClick(View view) {
                         if(!_isShowingReasult)
                         {
-                            Toast.makeText(getApplicationContext(), "ss", Toast.LENGTH_LONG).show();
-                            view.setBackgroundColor(Color.GREEN);
+                            view.setBackgroundResource(R.drawable.background_btn_green);
+                            ((Button)view).setTextColor(getResources().getColor(R.color.text_color_white) );
+                            MyMediaPlayer.getInstance().playNew(getApplication(),R.raw.correct_answer);
 
                             // timer -- millis: thời gian timer chạy; Interval : cứ bao nhiêu s thì ontick đc gọi
                             final CountDownTimer start = new CountDownTimer(endTime, endTime) {
@@ -255,17 +268,22 @@ public class Exam_Activity extends AppCompatActivity {
                     }
                 }
 
-                _curButtonList.get(i).setText(_wordList.get(rWord).getMota());
+                _curButtonList.get(i).setText(_wordList.get(rWord).getTen());
 
                 // set action
                 _curButtonList.get(i).setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("ResourceAsColor")
                     @Override
                     public void onClick(View view) {
                         if(!_isShowingReasult)
                         {
-                            Toast.makeText(getApplicationContext(), "wrong", Toast.LENGTH_SHORT).show();
-                            view.setBackgroundColor(Color.RED);
-                            _curButtonList.get(rBt).setBackgroundColor(Color.GREEN);
+                            view.setBackgroundResource(R.drawable.background_btn_red);
+                            ((Button)view).setTextColor(R.color.text_color_white);
+
+                            _curButtonList.get(rBt).setBackgroundResource(R.drawable.background_btn_green);
+                            _curButtonList.get(rBt).setTextColor(getResources().getColor(R.color.text_color_white));
+
+                            MyMediaPlayer.getInstance().playNew(getApplication(),R.raw.wrong_answer);
 
                             final CountDownTimer start = new CountDownTimer(endTime, endTime) {
                                 @Override
@@ -311,20 +329,11 @@ public class Exam_Activity extends AppCompatActivity {
     }
 
 
-    private void StopSound()
-    {
-        if(Word.mediaPlayer.isPlaying())
-        {
-            Word.StopPlayingSound();
-            //_questionSound.setBackgroundResource(R.drawable.ic_play_sound);
-        }
-    }
-
 
     //// ANIMATION
     private void BtnAnimationOut()
     {
-        StopSound();
+        MyMediaPlayer.getInstance().stop();
 
         Animation trans = AnimationUtils.loadAnimation(this,R.anim.transition_button_out);
         for (Button btn : _curButtonList) {

@@ -113,8 +113,19 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="card">Card</string>
+    <string name="quiz">quiz</string>
+    <string name="typing">Typing</string>
+    <string name="need_more_word">Need more word to take the test</string>
+    <string name="sure_delete">Bạn có chắc muốn Xóa ?</string>
+    <string name="notification">Thông Báo</string>
+    <string name="note">Note</string>
+    <string name="update_success">Update Successfully</string>
+    <string name="edit">Edit</string>
+
+
+    <string name="search">Search</string>
 
 
 </resources>

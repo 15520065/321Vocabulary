@@ -2,10 +2,8 @@ package com.example.phanhuuchi.huydaoduc.test.Main;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Exam_Card_Activity extends AppCompatActivity implements Animation.AnimationListener {
+public class Exam_Card_Activity extends AppCompatActivity {
 
     // Card
     List<CardView> _cardList;
@@ -102,6 +100,8 @@ public class Exam_Card_Activity extends AppCompatActivity implements Animation.A
                             if(_cardList.get(_lastCardFlipUpIndex).getCurWord().getId() == cardView.getCurWord().getId())
                             {
                                 // TH1: 2 card trùng nhau --> ẩn 2 card hiện tại và tăng _removeCount
+
+                                MyMediaPlayer.getInstance().playNew(getApplication(),R.raw.correct_answer);
 
                                 final CountDownTimer start = new CountDownTimer(endTime, endTime) {
                                     @Override
@@ -302,28 +302,6 @@ public class Exam_Card_Activity extends AppCompatActivity implements Animation.A
         {
             Word.StopPlayingSound();
         }
-    }
-
-    //// ANIMATION
-    //todo: xoa phan nay neu k xai
-    @Override
-    public void onAnimationStart(Animation animation) {
-
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        },3000);
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
     }
 
 }

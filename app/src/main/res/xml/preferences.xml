@@ -6,4 +6,10 @@
         android:key="locksreen_switch"
         android:summary="use app as lock screen"
         android:title="Lock screen" />
+
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="mute_sound"
+        android:summary="mute sound of application"
+        android:title="Mute sound" />
 </PreferenceScreen>

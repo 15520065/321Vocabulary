@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import com.example.phanhuuchi.huydaoduc.test.Main.MyMediaPlayer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -153,14 +155,10 @@ public class Word implements Serializable, Cloneable {
                 fos.write(getSound());
                 fos.close();
 
-                // resetting mediaplayer instance to evade problems
-                mediaPlayer.reset();
-
+                // đặt resource
                 FileInputStream fis = new FileInputStream(tempMp3);
-                mediaPlayer.setDataSource(fis.getFD());
+                MyMediaPlayer.getInstance().play(c,fis.getFD());
 
-                mediaPlayer.prepare();
-                mediaPlayer.start();
             } catch (IOException ex) {
                 String s = ex.toString();
                 ex.printStackTrace();

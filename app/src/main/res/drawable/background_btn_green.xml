@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke
-        android:width="2dp"
-        android:color="#f7b733"/>
+    <!--<stroke-->
+        <!--android:width="2dp"-->
+        <!--android:color="#2FD0FE"/>-->
     <corners
         android:radius="@dimen/button_radius" />
 
@@ -13,6 +13,11 @@
         android:top="2dp"
         android:bottom="2dp"/>
 
-    <solid android:color="#ffffff"/>
+    <gradient
+        android:startColor="@color/outline_color_blue"
+        android:endColor="@color/text_color_blue"
+        android:type="linear"/>
+
+    <solid android:color="#6bff63"/>
 
 </shape>

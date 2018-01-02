@@ -1,19 +1,17 @@
 package com.example.phanhuuchi.huydaoduc.test.Main;
 
-import android.app.KeyguardManager;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
 /**
- * Created by Admin on 1/1/2018.
+ * Created by Admin on 12/26/2018.
  */
 
 public class LockScreenService extends Service {
 
-    BroadcastReceiver receiver;
+    MyBroadcastReceiver receiver;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -23,22 +21,12 @@ public class LockScreenService extends Service {
     @Override
     @SuppressWarnings("deprecation")
     public void onCreate() {
-        KeyguardManager.KeyguardLock key;
-        KeyguardManager km = (KeyguardManager)getSystemService(KEYGUARD_SERVICE);
-
-        //This is deprecated, but it is a simple way to disable the lockscreen in code
-        assert km != null;
-        key = km.newKeyguardLock("IN");
-
-        key.disableKeyguard();
-
-        //Start listening for the Screen On, Screen Off, and Boot completed actions
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        // đặt bộ lọc
+        IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-
-        //Set up a receiver to listen for the Intents in this Service
-        receiver = new MyBroadcastReceiver();
+        // đăng kí receiver
+        receiver = MyBroadcastReceiver.getInstance();
         registerReceiver(receiver, filter);
 
         super.onCreate();
