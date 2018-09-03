@@ -24,7 +24,7 @@
             <item
                 android:id="@+id/about"
                 android:icon="@drawable/about_24px"
-                android:title="About"/>
+                android:title="Splash Screen"/>
         </menu>
     </item>
 

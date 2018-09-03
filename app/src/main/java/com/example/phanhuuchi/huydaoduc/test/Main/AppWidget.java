@@ -6,10 +6,6 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.example.phanhuuchi.huydaoduc.test.R;
-import com.example.phanhuuchi.huydaoduc.test.model.Word;
-
-import java.util.List;
-import java.util.Random;
 
 import io.paperdb.Paper;
 
@@ -19,7 +15,7 @@ import io.paperdb.Paper;
 public class AppWidget extends AppWidgetProvider {
 
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         Paper.init(context);
         String ten = Paper.book().read("Ten");
@@ -33,6 +29,19 @@ public class AppWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    public static void update(Context context)
+    {
+        Paper.init(context);
+        String ten = Paper.book().read("Ten");
+        String mota = Paper.book().read("Mota");
+
+//        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.app_widget);
+        views.setTextViewText(R.id.txtWidTen, ten);
+        views.setTextViewText(R.id.txtWidMota,mota);
     }
 
 

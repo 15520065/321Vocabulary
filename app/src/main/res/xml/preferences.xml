@@ -12,4 +12,6 @@
         android:key="mute_sound"
         android:summary="mute sound of application"
         android:title="Mute sound" />
+
+
 </PreferenceScreen>

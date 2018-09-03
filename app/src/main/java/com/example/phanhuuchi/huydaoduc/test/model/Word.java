@@ -97,14 +97,6 @@ public class Word implements Serializable, Cloneable {
         return Image;
     }
 
-    public Bitmap getImageBitmap() {
-        if(Image == null)
-            return null;
-
-        Bitmap bm = BitmapFactory.decodeByteArray(Image,0,Image.length);
-        return bm;
-    }
-
     public Word setImage(byte[] image) {
         Image = image;
         return this;
@@ -138,6 +130,14 @@ public class Word implements Serializable, Cloneable {
         return BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
     }
 
+    public Bitmap getImageBitmap() {
+        if(Image == null)
+            return null;
+
+        Bitmap bm = BitmapFactory.decodeByteArray(Image,0,Image.length);
+        return bm;
+    }
+
 
     //// SOUND
     public byte[] getSound() {
@@ -168,7 +168,7 @@ public class Word implements Serializable, Cloneable {
 
     public static void StopPlayingSound()
     {
-        mediaPlayer.stop();
+        MyMediaPlayer.getInstance().stop();
     }
 
     public Word setSound(byte[] sound) {
@@ -188,7 +188,7 @@ public class Word implements Serializable, Cloneable {
             try {
                 // convert qua byte arr
                 baos = new ByteArrayOutputStream();
-                byte[] buff = new byte[10240];
+                byte[] buff = new byte[1024000];
                 int i = Integer.MAX_VALUE;
                 while ((i = is.read(buff, 0, buff.length)) > 0) {
                     baos.write(buff, 0, i);

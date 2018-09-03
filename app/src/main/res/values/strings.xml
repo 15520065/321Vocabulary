@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Test</string>
+    <string name="app_name">321Vocabulary</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <!--Menu Context-->
     <string name="action_exit">Exit</string>
@@ -13,14 +13,14 @@
     <string name="action_edit">Edit</string>
     <string name="action_deleteSelect">Delete Select</string>
 
-    <string name="title_activity_detail">Detail</string>
-    <string name="title_activity_main_detail">MainDetail</string>
+    <string name="title_activity_detail" translatable="false">Detail</string>
+    <string name="title_activity_main_detail" translatable="false">MainDetail</string>
 
-    <string name="text_retrieving_data">Retrieving data &#8230;</string>
+    <string name="text_retrieving_data" translatable="false">Retrieving data &#8230;</string>
 
     <string name="action_settings">Settings</string>
-    <string name="todo">TODO</string>
-    <string name="appwidget_text">EXAMPLE ABC</string>
+    <string name="todo" translatable="false">TODO</string>
+    <string name="appwidget_text" translatable="false">EXAMPLE ABC</string>
     <string name="add_widget">Add widget</string>
 
     <!--Dialog Add new Word-->
@@ -37,71 +37,10 @@
     <string name="cancel">Cancel</string>
     <string name="category">category (can skip)</string>
     <string name="add_successfully">Add Successfully</string>
-    <string name="fill_missing_infor">Fill in the required information</string>
+    <string name="fill_missing_infor" translatable="false">Fill in the required information</string>
     <string name="duplicate_value">Already have this word, try another one</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
@@ -111,21 +50,24 @@
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 
-    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_title_vibrate" translatable="false">Vibrate</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="card">Card</string>
     <string name="quiz">quiz</string>
     <string name="typing">Typing</string>
-    <string name="need_more_word">Need more word to take the test</string>
-    <string name="sure_delete">Bạn có chắc muốn Xóa ?</string>
-    <string name="notification">Thông Báo</string>
+    <string name="need_more_word">Need more word to play game</string>
+    <string name="sure_delete">Are you sure ?</string>
+    <string name="notification">Notification</string>
     <string name="note">Note</string>
     <string name="update_success">Update Successfully</string>
     <string name="edit">Edit</string>
 
 
     <string name="search">Search</string>
+    <string name="textviewQuestion">Question</string>
+    <string name="answer">Answer</string>
+    <string name="permission_deny">Permission denied to read your External storage. Some function will not work correctly!</string>
 
 
 </resources>

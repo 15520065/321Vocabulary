@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.phanhuuchi.huydaoduc.test.ExamActivity.Exam_Activity;
+
 /**
- * Created by Admin on 12/26/2018.
+ * Created by Chi on 12/20/2018.
  */
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
@@ -33,7 +35,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, Exam_Activity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);             // thay FLAG_ACTIVITY_NEW_TASK bằng FLAG_ACTIVITY_CLEAR_TOP để tránh việc tạo lại nhiều activity
             context.startActivity(i);
-
         }
     }
 

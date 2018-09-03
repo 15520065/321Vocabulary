@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="tag"
             android:textSize="@dimen/theloai_text_size"
+            android:textStyle="italic"
             android:textColor="@color/theloai_view_text_color"
             android:background="@drawable/rounded_corner"
             android:layout_below="@+id/txtTen"/>

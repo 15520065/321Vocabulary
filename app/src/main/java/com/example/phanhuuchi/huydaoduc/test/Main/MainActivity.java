@@ -1,22 +1,28 @@
 package com.example.phanhuuchi.huydaoduc.test.Main;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +48,9 @@ import android.widget.Toast;
 
 import com.example.phanhuuchi.huydaoduc.test.Adapter.WordAdapter;
 import com.example.phanhuuchi.huydaoduc.test.Data.DBSQL;
+import com.example.phanhuuchi.huydaoduc.test.ExamActivity.Exam_Activity;
+import com.example.phanhuuchi.huydaoduc.test.ExamActivity.Exam_Card_Activity;
+import com.example.phanhuuchi.huydaoduc.test.ExamActivity.Exam_Typing_Activity;
 import com.example.phanhuuchi.huydaoduc.test.R;
 import com.example.phanhuuchi.huydaoduc.test.Settings.SettingsActivity;
 import com.example.phanhuuchi.huydaoduc.test.model.Detail_Word;
@@ -61,7 +70,7 @@ import io.paperdb.Paper;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String DATABASE_NAME="WordDB2.sqlite";
+    String DATABASE_NAME="WordData.sqlite";
     String DB_PATH_SUFFIX = "/databases/";
     public static SQLiteDatabase database=null;
 
@@ -100,7 +109,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        //
+        xuLyHienThiWord();
 
+
+        //mute
+        AudioManager mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        mgr.setStreamMute(AudioManager.STREAM_SYSTEM, true);
         // listener cho setting
         Boolean soundSWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_MUTESOUND_SWITCH,false);
         MyMediaPlayer.getInstance().setMute(soundSWitchPref);
@@ -116,6 +131,15 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
 
+        // widget
+        updateWidget();
+
+        //mute
+        AudioManager mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        if (mgr != null && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            mgr.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+        }
+
         // listener cho setting
         Boolean sWitchPref = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_MUTESOUND_SWITCH,false);
         MyMediaPlayer.getInstance().setMute(sWitchPref);
@@ -126,11 +150,38 @@ public class MainActivity extends AppCompatActivity
         else
             stopService(new Intent(this, LockScreenService.class));
 
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 99: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    // permission bị từ chối
+                    Toast.makeText(MainActivity.this, R.string.permission_deny, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // ask permission
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                99);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -177,6 +228,7 @@ public class MainActivity extends AppCompatActivity
         addEvents();
         xuLyHienThiWord();
         addNotification();
+
     }
 
     private void showGameDialog() {
@@ -368,7 +420,7 @@ public class MainActivity extends AppCompatActivity
 //        Cursor cursor=database.query("Word",null,null,null,null,null,null);
         dsWords.clear();
         while (cursor.moveToNext()){
-            //todo: fix chỗ này
+
             int id = cursor.getInt(0);
             String ten = cursor.getString(1);
             String mota = cursor.getString(2);
@@ -430,12 +482,10 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 addNotification();
-                addWidget();
 
                 word = dsWords.get(i);
                 Intent intent = new Intent(MainActivity.this,Detail_Word.class);
                 intent.putExtra(DBSQL.WORD_ID_KEY_PUT_EXTRA,word.getId());
-                Toast.makeText(getApplicationContext(), String.valueOf(word.getId()),Toast.LENGTH_LONG).show();
                 startActivity(intent);
 
             }
@@ -559,7 +609,7 @@ public class MainActivity extends AppCompatActivity
 
 
     //Lỗi
-    private void addWidget() {
+    private void updateWidget() {
         Random i = new Random();
         int a= i.nextInt(dsWords.size());
         Paper.init(this);
@@ -685,7 +735,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_manage) {
-
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.about) {

@@ -1,10 +1,13 @@
 package com.example.phanhuuchi.huydaoduc.test.Settings;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import com.example.phanhuuchi.huydaoduc.test.Main.LockScreenService;
 import com.example.phanhuuchi.huydaoduc.test.R;
 
 /**
@@ -25,4 +28,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
 
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        Boolean lockSreenSWitchPref = getPreferenceManager().getSharedPreferences().getBoolean(SettingsActivity.KEY_PREF_LOCKSCREEN_SWITCH,false);
+        if(lockSreenSWitchPref == true)
+            getActivity().startService(new Intent(getContext(), LockScreenService.class));
+        else
+            getActivity().stopService(new Intent(getContext(), LockScreenService.class));
+        return super.onPreferenceTreeClick(preference);
+    }
 }

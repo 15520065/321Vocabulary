@@ -106,7 +106,7 @@ public class MyMediaPlayer {
         }
     }
 
-    public boolean is_isMute() {
+    public boolean isMute() {
         return _isMute;
     }
 

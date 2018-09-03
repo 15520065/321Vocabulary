@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:weightSum="15"
     android:orientation="vertical"
-    tools:context="com.example.phanhuuchi.huydaoduc.test.Main.Exam_Activity">
+    tools:context="com.example.phanhuuchi.huydaoduc.test.ExamActivity.Exam_Activity">
 
     <TextView
         android:id="@+id/stepCountTextView"
